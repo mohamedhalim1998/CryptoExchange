@@ -6,5 +6,5 @@ data class RateExchangeResponse(
     @SerializedName("asset_id_base")
     val assetId: String,
     @SerializedName("rates")
-    val rates: List<CryptoCurrencyDto>
+    val rates: List<RateInfo>
 )
