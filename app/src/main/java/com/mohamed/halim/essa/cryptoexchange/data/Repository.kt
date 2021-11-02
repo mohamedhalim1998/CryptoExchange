@@ -1,5 +1,6 @@
 package com.mohamed.halim.essa.cryptoexchange.data
 
+import android.util.Log
 import com.mohamed.halim.essa.cryptoexchange.data.domain.CryptoCurrency
 import com.mohamed.halim.essa.cryptoexchange.data.network.ApiService
 import com.mohamed.halim.essa.cryptoexchange.data.network.model.CryptoCurrencyDto
@@ -8,14 +9,23 @@ import com.mohamed.halim.essa.cryptoexchange.data.network.model.DtoToDomainMappe
 import com.mohamed.halim.essa.cryptoexchange.data.network.model.RateInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.lang.Exception
+
+private const val TAG = "Repository"
 
 class Repository(private val networkSource: ApiService) {
     fun getCurrentRate(): Flow<List<CryptoCurrency>> {
         return flow {
-            val rates = networkSource.getRates();
-            val currencyInfoList = networkSource.getCurrencyInfo()
-            val cryptoCurrencyDtoList = convertToDto(rates.rates, currencyInfoList)
-            emit(DtoToDomainMapper.toDomainList(cryptoCurrencyDtoList))
+            try {
+                val rates = networkSource.getRates();
+                Log.e(TAG, "getCurrentRate: $rates")
+                val currencyInfoList = networkSource.getCurrencyInfo()
+                Log.e(TAG, "getCurrentRate: $currencyInfoList")
+                val cryptoCurrencyDtoList = convertToDto(rates.rates, currencyInfoList)
+                emit(DtoToDomainMapper.toDomainList(cryptoCurrencyDtoList))
+            } catch (e: Exception) {
+                Log.e(TAG, "getCurrentRate: ", e)
+            }
         }
     }
 
