@@ -9,7 +9,8 @@ object DtoToDomainMapper : DomainMapper<CryptoCurrencyDto> {
         return CryptoCurrency(
             model.currencyInfo.currencyId,
             model.currencyInfo.name,
-            IconsData.icons[model.currencyInfo.currencyId]!!,
+            IconsData.icons[model.currencyInfo.currencyId]
+                ?: IconsData.icons["USD"]!!,
             model.rateInfo.rate,
             model.rateInfo.time
         )
