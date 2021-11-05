@@ -9,5 +9,5 @@ data class CurrencyInfo(
     @SerializedName("name")
     val name: String,
     @SerializedName("type_is_crypto")
-    val isCrypto: Boolean,
+    val isCrypto: Int,
 )
