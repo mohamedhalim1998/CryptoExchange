@@ -1,4 +1,4 @@
-package com.mohamed.halim.essa.cryptoexchange.data.domain
+package com.mohamed.halim.essa.cryptoexchange.data.domain.cryptocurrency
 
 
 data class CryptoCurrency(

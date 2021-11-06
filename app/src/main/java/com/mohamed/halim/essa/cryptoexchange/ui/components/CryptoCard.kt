@@ -8,11 +8,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.AlignmentLine
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
-import com.mohamed.halim.essa.cryptoexchange.data.domain.CryptoCurrency
+import com.mohamed.halim.essa.cryptoexchange.data.domain.cryptocurrency.CryptoCurrency
 
 @Composable
 fun CryptoCard(cryptoCurrency: CryptoCurrency, onClick: () -> Unit) {

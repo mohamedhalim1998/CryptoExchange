@@ -1,11 +1,11 @@
 package com.mohamed.halim.essa.cryptoexchange.data
 
 import android.util.Log
-import com.mohamed.halim.essa.cryptoexchange.data.domain.CryptoCurrency
+import com.mohamed.halim.essa.cryptoexchange.data.domain.cryptocurrency.CryptoCurrency
 import com.mohamed.halim.essa.cryptoexchange.data.network.ApiService
 import com.mohamed.halim.essa.cryptoexchange.data.network.model.CryptoCurrencyDto
 import com.mohamed.halim.essa.cryptoexchange.data.network.model.CurrencyInfo
-import com.mohamed.halim.essa.cryptoexchange.data.network.model.DtoToDomainMapper
+import com.mohamed.halim.essa.cryptoexchange.data.network.model.CryptoDtoToDomainMapper
 import com.mohamed.halim.essa.cryptoexchange.data.network.model.RateInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -22,7 +22,7 @@ class Repository(private val networkSource: ApiService) {
                 val currencyInfoList = networkSource.getCurrencyInfo()
                 Log.e(TAG, "getCurrentRate: $currencyInfoList")
                 val cryptoCurrencyDtoList = convertToDto(rates.rates, currencyInfoList)
-                emit(DtoToDomainMapper.toDomainList(cryptoCurrencyDtoList))
+                emit(CryptoDtoToDomainMapper.toDomainList(cryptoCurrencyDtoList))
             } catch (e: Exception) {
                 Log.e(TAG, "getCurrentRate: ", e)
             }
