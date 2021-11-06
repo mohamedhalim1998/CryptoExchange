@@ -9,8 +9,6 @@ import com.mohamed.halim.essa.cryptoexchange.utils.HistoryPeriods
 import com.mohamed.halim.essa.cryptoexchange.utils.IsoTimeUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import retrofit2.http.Path
-import retrofit2.http.Query
 import java.lang.Exception
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -35,19 +33,22 @@ class Repository(private val networkSource: ApiService) {
     }
 
     fun getCryptoHistoryHour(assetId: String): Flow<List<RateHistoryDomain>> {
-        val end = Date().time
+        val calendar = Calendar.getInstance()
+        val end = calendar.timeInMillis - calendar.timeZone.rawOffset
         val start = end - TimeUnit.HOURS.toMillis(1)
         return getCryptoHistory(assetId, HistoryPeriods.ONE_MINUTE, start, end)
     }
 
     fun getCryptoHistory12Hour(assetId: String): Flow<List<RateHistoryDomain>> {
-        val end = Date().time
+        val calendar = Calendar.getInstance()
+        val end = calendar.timeInMillis - calendar.timeZone.rawOffset
         val start = end - TimeUnit.HOURS.toMillis(12)
         return getCryptoHistory(assetId, HistoryPeriods.FIVE_MINUTE, start, end)
     }
 
     fun getCryptoHistoryDay(assetId: String): Flow<List<RateHistoryDomain>> {
-        val end = Date().time
+        val calendar = Calendar.getInstance()
+        val end = calendar.timeInMillis - calendar.timeZone.rawOffset
         val start = end - TimeUnit.DAYS.toMillis(1)
         return getCryptoHistory(assetId, HistoryPeriods.TEN_MINUTE, start, end)
     }
