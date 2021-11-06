@@ -12,10 +12,10 @@ object RateHistoryDtoToDomain : RateHistoryDomainMapper<RateHistoryDto> {
             rateHistory.rateHigh,
             rateHistory.rateLow,
             rateHistory.rateOpen,
-            IsoTimeUtils.fromIso(rateHistory.timeClose.drop(9)),
-            IsoTimeUtils.fromIso(rateHistory.timeOpen.drop(9)),
-            IsoTimeUtils.fromIso(rateHistory.timePeriodEnd.drop(9)),
-            IsoTimeUtils.fromIso(rateHistory.timePeriodStart.drop(9)),
+            IsoTimeUtils.fromIso(rateHistory.timeClose.dropLast(9)),
+            IsoTimeUtils.fromIso(rateHistory.timeOpen.dropLast(9)),
+            IsoTimeUtils.fromIso(rateHistory.timePeriodEnd.dropLast(9)),
+            IsoTimeUtils.fromIso(rateHistory.timePeriodStart.dropLast(9)),
         )
     }
 
