@@ -6,5 +6,5 @@ data class CryptoCurrency(
     val name: String,
     val icon: String,
     val rate: Double,
-    val time: String,
+    val time: Long,
 )

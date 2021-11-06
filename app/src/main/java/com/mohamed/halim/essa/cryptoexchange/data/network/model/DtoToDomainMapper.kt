@@ -3,6 +3,7 @@ package com.mohamed.halim.essa.cryptoexchange.data.network.model
 import com.mohamed.halim.essa.cryptoexchange.data.domain.CryptoCurrency
 import com.mohamed.halim.essa.cryptoexchange.data.domain.DomainMapper
 import com.mohamed.halim.essa.cryptoexchange.utils.IconsData
+import com.mohamed.halim.essa.cryptoexchange.utils.IsoTimeUtils
 
 object DtoToDomainMapper : DomainMapper<CryptoCurrencyDto> {
     override fun toDomain(model: CryptoCurrencyDto): CryptoCurrency {
@@ -12,7 +13,7 @@ object DtoToDomainMapper : DomainMapper<CryptoCurrencyDto> {
             IconsData.icons[model.currencyInfo.currencyId]
                 ?: IconsData.icons["USD"]!!,
             model.rateInfo.rate,
-            model.rateInfo.time
+            IsoTimeUtils.fromIso(model.rateInfo.time)
         )
     }
 
