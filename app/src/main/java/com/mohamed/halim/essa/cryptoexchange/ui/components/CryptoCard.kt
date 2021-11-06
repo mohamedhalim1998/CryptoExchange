@@ -23,24 +23,24 @@ fun CryptoCard(cryptoCurrency: CryptoCurrency, onClick: () -> Unit) {
             .clickable {
                 onClick()
             },
-        elevation = 5.dp
+        elevation = 4.dp
     ) {
         Row(
             modifier = Modifier
                 .padding(15.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.Center
         ) {
             Image(
                 painter = rememberImagePainter(cryptoCurrency.icon),
                 contentDescription = cryptoCurrency.name,
                 modifier = Modifier
-                    .width(64.dp)
-                    .height(64.dp),
+                    .width(32.dp)
+                    .height(32.dp),
                 contentScale = ContentScale.FillWidth
             )
-            Column {
+            Column (Modifier.weight(1.0f, true).padding(PaddingValues(start = 16.dp))){
                 Text(text = cryptoCurrency.name)
                 Text(text = cryptoCurrency.cryptoId)
             }
