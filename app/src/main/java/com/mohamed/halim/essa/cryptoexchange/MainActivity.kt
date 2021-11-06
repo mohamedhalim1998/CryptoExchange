@@ -7,6 +7,12 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navArgument
+import androidx.navigation.compose.rememberNavController
+import com.mohamed.halim.essa.cryptoexchange.ui.screens.crptodetails.CryptoDetails
 import com.mohamed.halim.essa.cryptoexchange.ui.screens.cryptolist.CryptoList
 import com.mohamed.halim.essa.cryptoexchange.ui.theme.CryptoExchangeTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,7 +23,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             App {
-                CryptoList()
+                val navController = rememberNavController()
+                NavHost(navController = navController, startDestination = "CRYPTO_LIST") {
+                    composable("CRYPTO_LIST") { CryptoList(navController) }
+                    composable(
+                        "CRYPTO_DETAILS/{currency_id}"
+                    ) { backStackEntry -> CryptoDetails(backStackEntry.arguments?.getString("currency_id")!!) }
+                }
+
             }
         }
     }
