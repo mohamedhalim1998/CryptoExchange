@@ -1,13 +1,13 @@
 package com.mohamed.halim.essa.cryptoexchange.data.network.model
 
-import com.mohamed.halim.essa.cryptoexchange.data.domain.rate.RateHistoryDomain
+import com.mohamed.halim.essa.cryptoexchange.data.domain.rate.RateHistory
 import com.mohamed.halim.essa.cryptoexchange.data.domain.rate.RateHistoryDomainMapper
 import com.mohamed.halim.essa.cryptoexchange.utils.IsoTimeUtils
 
 object RateHistoryDtoToDomain : RateHistoryDomainMapper<RateHistoryDto> {
 
-    override fun toDomain(rateHistory: RateHistoryDto): RateHistoryDomain {
-        return RateHistoryDomain(
+    override fun toDomain(rateHistory: RateHistoryDto): RateHistory {
+        return RateHistory(
             rateHistory.rateClose,
             rateHistory.rateHigh,
             rateHistory.rateLow,
@@ -19,7 +19,7 @@ object RateHistoryDtoToDomain : RateHistoryDomainMapper<RateHistoryDto> {
         )
     }
 
-    override fun toDomainList(rateHistoryList: List<RateHistoryDto>): List<RateHistoryDomain> {
+    override fun toDomainList(rateHistoryList: List<RateHistoryDto>): List<RateHistory> {
         return rateHistoryList.map { toDomain(it) }
     }
 }

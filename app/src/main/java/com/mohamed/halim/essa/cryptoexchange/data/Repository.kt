@@ -2,7 +2,7 @@ package com.mohamed.halim.essa.cryptoexchange.data
 
 import android.util.Log
 import com.mohamed.halim.essa.cryptoexchange.data.domain.cryptocurrency.CryptoCurrency
-import com.mohamed.halim.essa.cryptoexchange.data.domain.rate.RateHistoryDomain
+import com.mohamed.halim.essa.cryptoexchange.data.domain.rate.RateHistory
 import com.mohamed.halim.essa.cryptoexchange.data.network.ApiService
 import com.mohamed.halim.essa.cryptoexchange.data.network.model.*
 import com.mohamed.halim.essa.cryptoexchange.utils.HistoryPeriods
@@ -32,21 +32,21 @@ class Repository(private val networkSource: ApiService) {
         }
     }
 
-    fun getCryptoHistoryHour(assetId: String): Flow<List<RateHistoryDomain>> {
+    fun getCryptoHistoryHour(assetId: String): Flow<List<RateHistory>> {
         val calendar = Calendar.getInstance()
         val end = calendar.timeInMillis - calendar.timeZone.rawOffset
         val start = end - TimeUnit.HOURS.toMillis(1)
         return getCryptoHistory(assetId, HistoryPeriods.ONE_MINUTE, start, end)
     }
 
-    fun getCryptoHistory12Hour(assetId: String): Flow<List<RateHistoryDomain>> {
+    fun getCryptoHistory12Hour(assetId: String): Flow<List<RateHistory>> {
         val calendar = Calendar.getInstance()
         val end = calendar.timeInMillis - calendar.timeZone.rawOffset
         val start = end - TimeUnit.HOURS.toMillis(12)
         return getCryptoHistory(assetId, HistoryPeriods.FIVE_MINUTE, start, end)
     }
 
-    fun getCryptoHistoryDay(assetId: String): Flow<List<RateHistoryDomain>> {
+    fun getCryptoHistoryDay(assetId: String): Flow<List<RateHistory>> {
         val calendar = Calendar.getInstance()
         val end = calendar.timeInMillis - calendar.timeZone.rawOffset
         val start = end - TimeUnit.DAYS.toMillis(1)
@@ -58,7 +58,7 @@ class Repository(private val networkSource: ApiService) {
         period: String,
         startTime: Long,
         endTime: Long,
-    ): Flow<List<RateHistoryDomain>> {
+    ): Flow<List<RateHistory>> {
         return flow {
             try {
                 emit(

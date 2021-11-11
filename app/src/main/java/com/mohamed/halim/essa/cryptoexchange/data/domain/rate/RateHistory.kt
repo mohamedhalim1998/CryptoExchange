@@ -1,6 +1,6 @@
 package com.mohamed.halim.essa.cryptoexchange.data.domain.rate
 
-data class RateHistoryDomain(
+data class RateHistory(
     val rateClose: Double,
     val rateHigh: Double,
     val rateLow: Double,
