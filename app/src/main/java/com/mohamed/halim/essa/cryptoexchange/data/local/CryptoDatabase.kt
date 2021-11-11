@@ -9,4 +9,6 @@ import com.mohamed.halim.essa.cryptoexchange.utils.RoomConverters
 
 @Database(entities = [CryptoCurrencyLocal::class, RateHistoryLocal::class], version = 1)
 @TypeConverters(RoomConverters::class)
-abstract class CryptoDatabase : RoomDatabase()
+abstract class CryptoDatabase : RoomDatabase() {
+    abstract fun cryptoDao(): CryptoDao
+}
