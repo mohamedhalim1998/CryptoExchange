@@ -5,7 +5,7 @@ import com.mohamed.halim.essa.cryptoexchange.data.domain.cryptocurrency.CryptoCu
 import com.mohamed.halim.essa.cryptoexchange.data.domain.rate.RateHistory
 import com.mohamed.halim.essa.cryptoexchange.data.network.ApiService
 import com.mohamed.halim.essa.cryptoexchange.data.network.model.*
-import com.mohamed.halim.essa.cryptoexchange.utils.HistoryPeriods
+import com.mohamed.halim.essa.cryptoexchange.utils.HistoryPeriod
 import com.mohamed.halim.essa.cryptoexchange.utils.IsoTimeUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -36,21 +36,21 @@ class Repository(private val networkSource: ApiService) {
         val calendar = Calendar.getInstance()
         val end = calendar.timeInMillis - calendar.timeZone.rawOffset
         val start = end - TimeUnit.HOURS.toMillis(1)
-        return getCryptoHistory(assetId, HistoryPeriods.ONE_MINUTE, start, end)
+        return getCryptoHistory(assetId, HistoryPeriod.ONE_MINUTE.value, start, end)
     }
 
     fun getCryptoHistory12Hour(assetId: String): Flow<List<RateHistory>> {
         val calendar = Calendar.getInstance()
         val end = calendar.timeInMillis - calendar.timeZone.rawOffset
         val start = end - TimeUnit.HOURS.toMillis(12)
-        return getCryptoHistory(assetId, HistoryPeriods.FIVE_MINUTE, start, end)
+        return getCryptoHistory(assetId, HistoryPeriod.FIVE_MINUTE.value, start, end)
     }
 
     fun getCryptoHistoryDay(assetId: String): Flow<List<RateHistory>> {
         val calendar = Calendar.getInstance()
         val end = calendar.timeInMillis - calendar.timeZone.rawOffset
         val start = end - TimeUnit.DAYS.toMillis(1)
-        return getCryptoHistory(assetId, HistoryPeriods.TEN_MINUTE, start, end)
+        return getCryptoHistory(assetId, HistoryPeriod.TEN_MINUTE.value, start, end)
     }
 
     private fun getCryptoHistory(
