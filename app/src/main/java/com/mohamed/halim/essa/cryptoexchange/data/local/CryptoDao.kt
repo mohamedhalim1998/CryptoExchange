@@ -2,6 +2,7 @@ package com.mohamed.halim.essa.cryptoexchange.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.mohamed.halim.essa.cryptoexchange.data.local.model.CryptoCurrencyLocal
 import com.mohamed.halim.essa.cryptoexchange.data.local.model.RateHistoryLocal
@@ -20,16 +21,16 @@ interface CryptoDao {
         historyPeriod: HistoryPeriod
     ): List<RateHistoryLocal>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCrypto(cryptoCurrencyLocal: CryptoCurrencyLocal)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCrypto(cryptoCurrencyLocalList: List<CryptoCurrencyLocal>)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRateHistory(rateHistoryLocal: RateHistoryLocal)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRateHistory(rateHistoryLocalList: List<RateHistoryLocal>)
 
 
