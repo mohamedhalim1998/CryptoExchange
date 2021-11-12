@@ -5,6 +5,7 @@ import com.mohamed.halim.essa.cryptoexchange.data.domain.cryptocurrency.CryptoCu
 import com.mohamed.halim.essa.cryptoexchange.data.domain.rate.RateHistory
 import com.mohamed.halim.essa.cryptoexchange.data.local.CryptoDao
 import com.mohamed.halim.essa.cryptoexchange.data.local.model.CryptoLocalToDomain
+import com.mohamed.halim.essa.cryptoexchange.data.local.model.RateHistoryLocalToDomain
 import com.mohamed.halim.essa.cryptoexchange.data.network.ApiService
 import com.mohamed.halim.essa.cryptoexchange.data.network.model.*
 import com.mohamed.halim.essa.cryptoexchange.utils.HistoryPeriod
@@ -43,43 +44,58 @@ class Repository(private val networkSource: ApiService, private val localSource:
         val calendar = Calendar.getInstance()
         val end = calendar.timeInMillis - calendar.timeZone.rawOffset
         val start = end - TimeUnit.HOURS.toMillis(1)
-        return getCryptoHistory(assetId, HistoryPeriod.ONE_MINUTE.value, start, end)
+        return getCryptoHistory(assetId, HistoryPeriod.ONE_MINUTE, start, end)
     }
 
     fun getCryptoHistory12Hour(assetId: String): Flow<List<RateHistory>> {
         val calendar = Calendar.getInstance()
         val end = calendar.timeInMillis - calendar.timeZone.rawOffset
         val start = end - TimeUnit.HOURS.toMillis(12)
-        return getCryptoHistory(assetId, HistoryPeriod.FIVE_MINUTE.value, start, end)
+        return getCryptoHistory(assetId, HistoryPeriod.FIVE_MINUTE, start, end)
     }
 
     fun getCryptoHistoryDay(assetId: String): Flow<List<RateHistory>> {
         val calendar = Calendar.getInstance()
         val end = calendar.timeInMillis - calendar.timeZone.rawOffset
         val start = end - TimeUnit.DAYS.toMillis(1)
-        return getCryptoHistory(assetId, HistoryPeriod.TEN_MINUTE.value, start, end)
+        return getCryptoHistory(assetId, HistoryPeriod.TEN_MINUTE, start, end)
     }
 
     private fun getCryptoHistory(
         assetId: String,
-        period: String,
+        period: HistoryPeriod,
         startTime: Long,
         endTime: Long,
     ): Flow<List<RateHistory>> {
         return flow {
             try {
+                val domainList = RateHistoryDtoToDomain.toDomainList(
+                    networkSource.getCryptoHistory(
+                        assetId,
+                        period.value,
+                        IsoTimeUtils.toIso(startTime),
+                        IsoTimeUtils.toIso(endTime)
+                    )
+                )
+
+                localSource.insertRateHistory(
+                    RateHistoryLocalToDomain.fromDomainList(
+                        domainList,
+                        "USD", period
+                    )
+                )
+
+            } catch (e: Exception) {
+                Log.e(TAG, "getCryptoHistory: $e")
+            } finally {
                 emit(
-                    RateHistoryDtoToDomain.toDomainList(
-                        networkSource.getCryptoHistory(
-                            assetId,
-                            period,
-                            IsoTimeUtils.toIso(startTime),
-                            IsoTimeUtils.toIso(endTime)
+                    RateHistoryLocalToDomain.toDomainList(
+                        localSource.getCryptoHistory(
+                            "USD",
+                            period
                         )
                     )
                 )
-            } catch (e: Exception) {
-                Log.e(TAG, "getCryptoHistory: $e")
             }
         }
     }
