@@ -25,9 +25,16 @@ class Repository(private val networkSource: ApiService, private val localSource:
                 val rates = networkSource.getRates();
                 val currencyInfoList = networkSource.getCurrencyInfo()
                 val cryptoCurrencyDtoList = convertToDto(rates.rates, currencyInfoList)
-                emit(CryptoDtoToDomainMapper.toDomainList(cryptoCurrencyDtoList))
+                val domainList = CryptoDtoToDomainMapper.toDomainList(cryptoCurrencyDtoList);
+                localSource.insertCrypto(CryptoLocalToDomain.fromDomainList(domainList, "USD"))
             } catch (e: Exception) {
                 Log.e(TAG, "getCurrentRate: ", e)
+            } finally {
+                emit(
+                    CryptoLocalToDomain.toDomainList(
+                        localSource.getCurrentRates("USD")
+                    )
+                )
             }
         }
     }
