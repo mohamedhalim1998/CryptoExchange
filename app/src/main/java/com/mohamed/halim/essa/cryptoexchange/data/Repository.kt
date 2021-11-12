@@ -3,6 +3,8 @@ package com.mohamed.halim.essa.cryptoexchange.data
 import android.util.Log
 import com.mohamed.halim.essa.cryptoexchange.data.domain.cryptocurrency.CryptoCurrency
 import com.mohamed.halim.essa.cryptoexchange.data.domain.rate.RateHistory
+import com.mohamed.halim.essa.cryptoexchange.data.local.CryptoDao
+import com.mohamed.halim.essa.cryptoexchange.data.local.model.CryptoLocalToDomain
 import com.mohamed.halim.essa.cryptoexchange.data.network.ApiService
 import com.mohamed.halim.essa.cryptoexchange.data.network.model.*
 import com.mohamed.halim.essa.cryptoexchange.utils.HistoryPeriod
@@ -16,14 +18,12 @@ import kotlin.collections.HashMap
 
 private const val TAG = "Repository"
 
-class Repository(private val networkSource: ApiService) {
+class Repository(private val networkSource: ApiService, private val localSource: CryptoDao) {
     fun getCurrentRate(): Flow<List<CryptoCurrency>> {
         return flow {
             try {
                 val rates = networkSource.getRates();
-                Log.e(TAG, "getCurrentRate: $rates")
                 val currencyInfoList = networkSource.getCurrencyInfo()
-                Log.e(TAG, "getCurrentRate: $currencyInfoList")
                 val cryptoCurrencyDtoList = convertToDto(rates.rates, currencyInfoList)
                 emit(CryptoDtoToDomainMapper.toDomainList(cryptoCurrencyDtoList))
             } catch (e: Exception) {
