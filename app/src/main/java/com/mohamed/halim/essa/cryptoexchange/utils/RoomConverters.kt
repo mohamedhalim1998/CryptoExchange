@@ -5,7 +5,7 @@ import androidx.room.TypeConverter
 class RoomConverters {
     @TypeConverter
     fun convertFromHistoryPeriod(historyPeriod: HistoryPeriod): String {
-        return historyPeriod.value
+        return historyPeriod.name
     }
 
     @TypeConverter
