@@ -12,13 +12,13 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CryptoDao {
     @Query("SELECT * FROM crypto WHERE realCurrencyId = :realCurrencyId")
-    fun getCurrentRates(realCurrencyId: String): Flow<List<CryptoCurrencyLocal>>
+    suspend fun getCurrentRates(realCurrencyId: String): List<CryptoCurrencyLocal>
 
     @Query("SELECT * FROM `Rate History` WHERE realCurrencyId = :realCurrencyId AND historyPeriod = :historyPeriod")
-    fun getCryptoHistoryHour(
+    suspend fun getCryptoHistoryHour(
         realCurrencyId: String,
         historyPeriod: HistoryPeriod
-    ): Flow<List<RateHistoryLocal>>
+    ): List<RateHistoryLocal>
 
     @Insert
     suspend fun insertCrypto(cryptoCurrencyLocal: CryptoCurrencyLocal)
