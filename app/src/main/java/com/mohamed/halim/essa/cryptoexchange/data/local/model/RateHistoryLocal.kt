@@ -7,7 +7,7 @@ import com.mohamed.halim.essa.cryptoexchange.utils.HistoryPeriod
 
 @Entity(tableName = "Rate History")
 data class RateHistoryLocal(
-    val from: String,
+    val realCurrencyId: String,
     val historyPeriod: HistoryPeriod,
     val rateClose: Double,
     val rateHigh: Double,

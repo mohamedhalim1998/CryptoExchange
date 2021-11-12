@@ -26,11 +26,11 @@ object RateHistoryLocalToDomain : RateHistoryDomainMapper<RateHistoryLocal> {
 
     fun fromDomain(
         rateHistory: RateHistory,
-        from: String,
+        realCurrencyId: String,
         historyPeriod: HistoryPeriod
     ): RateHistoryLocal {
         return RateHistoryLocal(
-            from,
+            realCurrencyId,
             historyPeriod,
             rateHistory.rateClose,
             rateHistory.rateHigh,
@@ -45,11 +45,11 @@ object RateHistoryLocalToDomain : RateHistoryDomainMapper<RateHistoryLocal> {
 
     fun fromDomainList(
         rateHistoryList: List<RateHistory>,
-        from: String,
+        realCurrencyId: String,
         historyPeriod: HistoryPeriod
     ): List<RateHistoryLocal> {
         return rateHistoryList.map {
-            fromDomain(it, from, historyPeriod)
+            fromDomain(it, realCurrencyId, historyPeriod)
         }
     }
 

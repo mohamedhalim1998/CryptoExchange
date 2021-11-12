@@ -11,12 +11,12 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CryptoDao {
-    @Query("SELECT * FROM crypto WHERE `from` = :from")
-    fun getCurrentRates(from: String): Flow<List<CryptoCurrencyLocal>>
+    @Query("SELECT * FROM crypto WHERE realCurrencyId = :realCurrencyId")
+    fun getCurrentRates(realCurrencyId: String): Flow<List<CryptoCurrencyLocal>>
 
-    @Query("SELECT * FROM `Rate History` WHERE `from` = :from AND historyPeriod = :historyPeriod")
+    @Query("SELECT * FROM `Rate History` WHERE realCurrencyId = :realCurrencyId AND historyPeriod = :historyPeriod")
     fun getCryptoHistoryHour(
-        from: String,
+        realCurrencyId: String,
         historyPeriod: HistoryPeriod
     ): Flow<List<RateHistoryLocal>>
 

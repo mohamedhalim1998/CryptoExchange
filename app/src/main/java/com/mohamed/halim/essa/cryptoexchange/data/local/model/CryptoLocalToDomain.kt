@@ -20,10 +20,10 @@ object CryptoLocalToDomain : CryptoDomainMapper<CryptoCurrencyLocal> {
         }
     }
 
-    fun fromDomain(model: CryptoCurrency, from: String): CryptoCurrencyLocal {
+    fun fromDomain(model: CryptoCurrency, realCurrencyId: String): CryptoCurrencyLocal {
         return CryptoCurrencyLocal(
             model.cryptoId,
-            from,
+            realCurrencyId,
             model.name,
             model.icon,
             model.rate,
@@ -31,9 +31,9 @@ object CryptoLocalToDomain : CryptoDomainMapper<CryptoCurrencyLocal> {
         )
     }
 
-    fun fromDomainList(model: List<CryptoCurrency>, from: String): List<CryptoCurrencyLocal> {
+    fun fromDomainList(model: List<CryptoCurrency>, realCurrencyId: String): List<CryptoCurrencyLocal> {
         return model.map {
-            fromDomain(it, from)
+            fromDomain(it, realCurrencyId)
         }
     }
 }

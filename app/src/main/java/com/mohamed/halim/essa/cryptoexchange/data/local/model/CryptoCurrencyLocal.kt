@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class CryptoCurrencyLocal(
     @PrimaryKey
     val cryptoId: String,
-    val from: String,
+    val realCurrencyId: String,
     val name: String,
     val icon: String,
     val rate: Double,
