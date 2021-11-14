@@ -15,9 +15,10 @@ interface CryptoDao {
     @Query("SELECT * FROM crypto WHERE realCurrencyId = :realCurrencyId")
     suspend fun getCurrentRates(realCurrencyId: String): List<CryptoCurrencyLocal>
 
-    @Query("SELECT * FROM `Rate History` WHERE realCurrencyId = :realCurrencyId AND historyPeriod = :historyPeriod")
+    @Query("SELECT * FROM `Rate History` WHERE realCurrencyId = :realCurrencyId AND historyPeriod = :historyPeriod AND cryptoCurrency = :cryptoCurrency")
     suspend fun getCryptoHistory(
         realCurrencyId: String,
+        cryptoCurrency: String,
         historyPeriod: HistoryPeriod
     ): List<RateHistoryLocal>
 
@@ -37,7 +38,11 @@ interface CryptoDao {
     @Query("DELETE FROM crypto")
     suspend fun deleteCrypto()
 
-    @Query("DELETE FROM `Rate History` WHERE historyPeriod = :historyPeriod")
-    suspend fun deleteHistoryRate(historyPeriod: HistoryPeriod)
+    @Query("DELETE FROM `Rate History` WHERE historyPeriod = :historyPeriod AND realCurrencyId = :realCurrencyId AND cryptoCurrency = :cryptoCurrency")
+    suspend fun deleteHistoryRate(
+        realCurrencyId: String,
+        cryptoCurrency: String,
+        historyPeriod: HistoryPeriod
+    )
 
 }

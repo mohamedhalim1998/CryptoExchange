@@ -77,11 +77,12 @@ class Repository(private val networkSource: ApiService, private val localSource:
                         IsoTimeUtils.toIso(endTime)
                     )
                 )
+                localSource.deleteHistoryRate("USD", assetId, period)
 
                 localSource.insertRateHistory(
                     RateHistoryLocalToDomain.fromDomainList(
                         domainList,
-                        "USD", period
+                        "USD", assetId, period
                     )
                 )
 
@@ -92,6 +93,7 @@ class Repository(private val networkSource: ApiService, private val localSource:
                     RateHistoryLocalToDomain.toDomainList(
                         localSource.getCryptoHistory(
                             "USD",
+                            assetId,
                             period
                         )
                     )

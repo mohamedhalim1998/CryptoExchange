@@ -20,7 +20,8 @@ object RoomDatabaseModule {
         val db = Room.databaseBuilder(
             context,
             CryptoDatabase::class.java, "database-name"
-        ).build()
+        ).fallbackToDestructiveMigration()
+            .build()
         return db.cryptoDao()
     }
 }
