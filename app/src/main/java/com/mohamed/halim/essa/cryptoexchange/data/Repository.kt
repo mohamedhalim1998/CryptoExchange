@@ -40,6 +40,16 @@ class Repository(private val networkSource: ApiService, private val localSource:
         }
     }
 
+    fun getCurrentRate(cryptoId: String): Flow<CryptoCurrency> {
+        return flow {
+            emit(
+                CryptoLocalToDomain.toDomain(
+                    localSource.getCurrentRates("USD", cryptoId)
+                )
+            )
+        }
+    }
+
     fun getCryptoHistoryHour(assetId: String): Flow<List<RateHistory>> {
         val calendar = Calendar.getInstance()
         val end = calendar.timeInMillis - calendar.timeZone.rawOffset

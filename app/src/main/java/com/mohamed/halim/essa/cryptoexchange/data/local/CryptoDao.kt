@@ -15,6 +15,12 @@ interface CryptoDao {
     @Query("SELECT * FROM crypto WHERE realCurrencyId = :realCurrencyId")
     suspend fun getCurrentRates(realCurrencyId: String): List<CryptoCurrencyLocal>
 
+    @Query("SELECT * FROM crypto WHERE realCurrencyId = :realCurrencyId AND cryptoId = :cryptoCurrencyId")
+    suspend fun getCurrentRates(
+        realCurrencyId: String,
+        cryptoCurrencyId: String
+    ): CryptoCurrencyLocal
+
     @Query("SELECT * FROM `Rate History` WHERE realCurrencyId = :realCurrencyId AND historyPeriod = :historyPeriod AND cryptoCurrency = :cryptoCurrency")
     suspend fun getCryptoHistory(
         realCurrencyId: String,
