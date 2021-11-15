@@ -27,8 +27,10 @@ fun Graph(rates: List<RateHistory>) {
             .fillMaxWidth()
             .fillMaxHeight(),
         update = {
-            chart.notifyDataSetChanged();
-            chart.invalidate()
+            it.data = LineData(setupDataset(rates))
+            it.notifyDataSetChanged()
+            it.invalidate()
+
         })
 }
 
@@ -46,6 +48,7 @@ fun setupChart(rates: List<RateHistory>, context: Context): LineChart {
     chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
     chart.xAxis.setDrawGridLines(false)
     chart.setPinchZoom(false)
+    chart.setScaleEnabled(false)
     chart.setTouchEnabled(true)
     chart.xAxis.setDrawLabels(false)
     chart.legend.isEnabled = false
