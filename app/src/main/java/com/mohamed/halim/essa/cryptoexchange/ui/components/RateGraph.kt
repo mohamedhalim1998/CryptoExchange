@@ -61,7 +61,8 @@ fun setupDataset(rates: List<RateHistory>): LineDataSet {
     dataSet.setDrawFilled(false)
     dataSet.setDrawCircles(false)
     dataSet.setDrawHighlightIndicators(false)
-    dataSet.lineWidth = 5F
+    dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+    dataSet.lineWidth = 3F
     return dataSet
 }
 
