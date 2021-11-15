@@ -28,10 +28,12 @@ private const val TAG = "CryptoDetails"
 @Composable
 fun CryptoDetails(cryptoId: String, viewModel: CryptoDetailsViewModel = hiltViewModel()) {
     val rateHistory = viewModel.rateHistory.observeAsState(listOf())
-    val currentRate = viewModel.currentRate.observeAsState(null)
-    val currentPeriod = viewModel.currentPeriod.observeAsState(null)
-    viewModel.getCryptoHistoryHour(cryptoId)
-    viewModel.getCurrentRate(cryptoId)
+    val currentRate = viewModel.currentRate.observeAsState()
+    val currentPeriod = viewModel.currentPeriod.observeAsState()
+    if (currentPeriod.value == null) {
+        viewModel.getCryptoHistoryHour(cryptoId)
+        viewModel.getCurrentRate(cryptoId)
+    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -69,10 +71,10 @@ fun CryptoDetails(cryptoId: String, viewModel: CryptoDetailsViewModel = hiltView
                             ?: IconsData.icons["USD"]!!
                     ),
                     contentDescription = cryptoId,
-                    modifier = Modifier.weight(1F, true),
+                    modifier = Modifier.weight(1F, true).padding(8.dp),
                     contentScale = ContentScale.Fit
                 )
-                Row {
+                Row(Modifier.padding(horizontal = 16.dp)) {
                     Column(
                         Modifier
                             .weight(1.0f, true)

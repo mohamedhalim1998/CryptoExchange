@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -21,13 +23,14 @@ private const val TAG = "RateGraph"
 
 @Composable
 fun Graph(rates: List<RateHistory>) {
-    val chart = setupChart(rates, LocalContext.current)
+    val context = LocalContext.current
+    val chart = setupChart(rates, context)
     AndroidView({ chart },
         Modifier
             .fillMaxWidth()
             .fillMaxHeight(),
         update = {
-            it.data = LineData(setupDataset(rates))
+            it.data = LineData(setupDataset(rates, context))
             it.notifyDataSetChanged()
             it.invalidate()
 
@@ -36,7 +39,7 @@ fun Graph(rates: List<RateHistory>) {
 
 fun setupChart(rates: List<RateHistory>, context: Context): LineChart {
     val chart = LineChart(context);
-    chart.data = LineData(setupDataset(rates))
+    chart.data = LineData(setupDataset(rates, context))
     chart.setBackgroundColor(Color.WHITE);
     chart.description.isEnabled = false
     chart.notifyDataSetChanged()
@@ -57,7 +60,7 @@ fun setupChart(rates: List<RateHistory>, context: Context): LineChart {
     return chart
 }
 
-fun setupDataset(rates: List<RateHistory>): LineDataSet {
+fun setupDataset(rates: List<RateHistory>, context: Context): LineDataSet {
     val dataSet = LineDataSet(mapRateToEntries(rates), "Rate")
     dataSet.setDrawCircleHole(false)
     dataSet.setDrawValues(false)
@@ -66,6 +69,9 @@ fun setupDataset(rates: List<RateHistory>): LineDataSet {
     dataSet.setDrawHighlightIndicators(false)
     dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
     dataSet.lineWidth = 3F
+    dataSet.color = ContextCompat.getColor(context, R.color.teal_alpha)
+    dataSet.setDrawFilled(true)
+    dataSet.fillDrawable = ContextCompat.getDrawable(context, R.drawable.graph_fill)
     return dataSet
 }
 
