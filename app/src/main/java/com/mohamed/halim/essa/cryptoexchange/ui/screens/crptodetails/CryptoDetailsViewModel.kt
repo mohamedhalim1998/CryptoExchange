@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.mohamed.halim.essa.cryptoexchange.data.Repository
 import com.mohamed.halim.essa.cryptoexchange.data.domain.cryptocurrency.CryptoCurrency
 import com.mohamed.halim.essa.cryptoexchange.data.domain.rate.RateHistory
+import com.mohamed.halim.essa.cryptoexchange.utils.HistoryPeriod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -22,13 +23,17 @@ class CryptoDetailsViewModel @Inject constructor(
         get() = _rateHistory
 
     private val _currentRate = MutableLiveData<CryptoCurrency>()
-    val currentRate : LiveData<CryptoCurrency>
+    val currentRate: LiveData<CryptoCurrency>
         get() = _currentRate
+    private val _currentPeriod = MutableLiveData<HistoryPeriod>()
+    val currentPeriod: LiveData<HistoryPeriod>
+        get() = _currentPeriod
 
     fun getCryptoHistoryHour(assetId: String) {
         viewModelScope.launch {
             repository.getCryptoHistoryHour(assetId).collect {
                 _rateHistory.value = it
+                _currentPeriod.value = HistoryPeriod.ONE_HOUR
                 Log.d(TAG, "getCryptoHistoryHour: ${rateHistory.value?.size}")
             }
         }
@@ -38,6 +43,7 @@ class CryptoDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getCryptoHistory12Hour(assetId).collect {
                 _rateHistory.value = it
+                _currentPeriod.value = HistoryPeriod.TWELVE_HOUR
             }
         }
     }
@@ -46,6 +52,7 @@ class CryptoDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getCryptoHistoryDay(assetId).collect {
                 _rateHistory.value = it
+                _currentPeriod.value = HistoryPeriod.ONE_DAY
             }
         }
     }
