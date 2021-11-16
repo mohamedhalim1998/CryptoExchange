@@ -4,7 +4,9 @@ import android.app.Application
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.mohamed.halim.essa.cryptoexchange.data.network.model.CurrencyInfo
 import com.mohamed.halim.essa.cryptoexchange.data.network.model.IconInfo
+import com.mohamed.halim.essa.cryptoexchange.utils.CurrencyDataUtils
 import com.mohamed.halim.essa.cryptoexchange.utils.IconsData
 import dagger.hilt.android.HiltAndroidApp
 
@@ -15,12 +17,13 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         initIconsData()
+        initCurrencyData()
 
     }
 
+
     private fun initIconsData() {
-        val string = readFile();
-        Log.d(TAG, "initIconsData: $string")
+        val string = readFile("icons.json");
         val listType = object : TypeToken<ArrayList<IconInfo?>?>() {}.type
         val iconsList: List<IconInfo?> = Gson().fromJson(
             string, listType
@@ -31,8 +34,21 @@ class App : Application() {
         }
     }
 
-    private fun readFile(): String {
-        val stream = assets.open("icons.json")
+    private fun initCurrencyData() {
+        val string = readFile("currencyData.json");
+        val listType = object : TypeToken<ArrayList<CurrencyInfo?>?>() {}.type
+        val currencies: List<CurrencyInfo?> = Gson().fromJson(
+            string, listType
+        ) as List<CurrencyInfo?>
+        for (currency in currencies) {
+            if (currency != null)
+                CurrencyDataUtils.cryptoCurrencyMap[currency.currencyId] = currency
+        }
+    }
+
+
+    private fun readFile(fileName: String): String {
+        val stream = assets.open(fileName)
         val b = ByteArray(stream.available())
         stream.read(b)
         return String(b);
