@@ -33,7 +33,7 @@ fun CryptoList(navController: NavController, viewModel: CryptoListViewModel = hi
                 elevation = 12.dp,
                 actions = {
                     IconButton(onClick = {
-
+                        navController.navigate("SETTINGS")
                     }) {
                         Icon(Icons.Filled.Settings, "")
                     }
