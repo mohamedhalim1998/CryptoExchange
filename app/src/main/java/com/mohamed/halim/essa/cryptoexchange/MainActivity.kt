@@ -28,7 +28,12 @@ class MainActivity : ComponentActivity() {
                     composable("CRYPTO_LIST") { CryptoList(navController) }
                     composable(
                         "CRYPTO_DETAILS/{currency_id}"
-                    ) { backStackEntry -> CryptoDetails(backStackEntry.arguments?.getString("currency_id")!!) }
+                    ) { backStackEntry ->
+                        CryptoDetails(
+                            navController,
+                            backStackEntry.arguments?.getString("currency_id")!!
+                        )
+                    }
                 }
 
             }

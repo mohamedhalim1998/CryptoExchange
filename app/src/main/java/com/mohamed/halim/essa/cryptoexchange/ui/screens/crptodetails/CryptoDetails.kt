@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.mohamed.halim.essa.cryptoexchange.ui.components.Chip
 import com.mohamed.halim.essa.cryptoexchange.ui.components.Graph
@@ -26,7 +27,11 @@ import com.mohamed.halim.essa.cryptoexchange.utils.IconsData
 private const val TAG = "CryptoDetails"
 
 @Composable
-fun CryptoDetails(cryptoId: String, viewModel: CryptoDetailsViewModel = hiltViewModel()) {
+fun CryptoDetails(
+    navController: NavController,
+    cryptoId: String,
+    viewModel: CryptoDetailsViewModel = hiltViewModel()
+) {
     val rateHistory = viewModel.rateHistory.observeAsState(listOf())
     val currentRate = viewModel.currentRate.observeAsState()
     val currentPeriod = viewModel.currentPeriod.observeAsState()
@@ -41,7 +46,9 @@ fun CryptoDetails(cryptoId: String, viewModel: CryptoDetailsViewModel = hiltView
                     Text(text = currentRate.value?.name ?: cryptoId)
                 },
                 navigationIcon = {
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = {
+                        navController.popBackStack()
+                    }) {
                         Icon(Icons.Filled.ArrowBack, "")
                     }
                 },
@@ -71,7 +78,9 @@ fun CryptoDetails(cryptoId: String, viewModel: CryptoDetailsViewModel = hiltView
                             ?: IconsData.icons["USD"]!!
                     ),
                     contentDescription = cryptoId,
-                    modifier = Modifier.weight(1F, true).padding(8.dp),
+                    modifier = Modifier
+                        .weight(1F, true)
+                        .padding(8.dp),
                     contentScale = ContentScale.Fit
                 )
                 Row(Modifier.padding(horizontal = 16.dp)) {
