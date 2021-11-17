@@ -14,6 +14,7 @@ import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.mohamed.halim.essa.cryptoexchange.ui.screens.crptodetails.CryptoDetails
 import com.mohamed.halim.essa.cryptoexchange.ui.screens.cryptolist.CryptoList
+import com.mohamed.halim.essa.cryptoexchange.ui.screens.settings.RealCurrencySettings
 import com.mohamed.halim.essa.cryptoexchange.ui.screens.settings.Settings
 import com.mohamed.halim.essa.cryptoexchange.ui.theme.CryptoExchangeTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +29,7 @@ class MainActivity : ComponentActivity() {
                 NavHost(navController = navController, startDestination = "CRYPTO_LIST") {
                     composable("CRYPTO_LIST") { CryptoList(navController) }
                     composable("SETTINGS") { Settings(navController) }
+                    composable("SETTINGS/REAL_CURRENCY") { RealCurrencySettings(navController) }
                     composable(
                         "CRYPTO_DETAILS/{currency_id}"
                     ) { backStackEntry ->
