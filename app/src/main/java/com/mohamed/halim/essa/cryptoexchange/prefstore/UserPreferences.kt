@@ -38,7 +38,7 @@ class PrefsStoreManager(
             UserPreferences(showCompleted)
         }
 
-    suspend fun updateShowCompleted(realCurrency: String) {
+    suspend fun updateRealCurrency(realCurrency: String) {
         userDataStore.edit { preferences ->
             preferences[PreferencesKeys.REAL_CURRENCY] = realCurrency
         }
