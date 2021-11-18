@@ -34,7 +34,6 @@ fun RealCurrencySettings(navController: NavController, viewModel: SettingsViewMo
                 Text(text = stringResource(id = R.string.app_name))
             },
             backgroundColor = MaterialTheme.colors.primary,
-            contentColor = Color.White,
             elevation = 12.dp,
         )
     }) {

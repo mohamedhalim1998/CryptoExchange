@@ -29,7 +29,6 @@ fun CryptoList(navController: NavController, viewModel: CryptoListViewModel = hi
                     Text(text = stringResource(id = R.string.app_name))
                 },
                 backgroundColor = MaterialTheme.colors.primary,
-                contentColor = Color.White,
                 elevation = 12.dp,
                 actions = {
                     IconButton(onClick = {

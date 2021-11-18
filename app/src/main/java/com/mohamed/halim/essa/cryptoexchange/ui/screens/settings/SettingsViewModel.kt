@@ -47,6 +47,12 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun toggleDarkTheme() {
+        viewModelScope.launch {
+            prefsStoreManager.toggleDarkTheme()
+        }
+    }
+
     fun addCryptoCurrency(id: String) {
         cryptoCurrencies.add(id)
     }

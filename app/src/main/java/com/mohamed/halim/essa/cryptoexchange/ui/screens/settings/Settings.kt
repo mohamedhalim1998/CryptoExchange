@@ -2,9 +2,7 @@ package com.mohamed.halim.essa.cryptoexchange.ui.screens.settings
 
 import android.util.Log
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -37,7 +35,6 @@ fun Settings(navController: NavController, viewModel: SettingsViewModel = hiltVi
                     }
                 },
                 backgroundColor = MaterialTheme.colors.primary,
-                contentColor = Color.White,
                 elevation = 12.dp
             )
         }
@@ -60,8 +57,22 @@ fun Settings(navController: NavController, viewModel: SettingsViewModel = hiltVi
                 }
                 .fillMaxWidth()
                 .padding(16.dp)) {
-                Column(Modifier.padding(16.dp)) {
-                    Text("Cryptocurrencies")
+
+                Text(modifier = Modifier.padding(16.dp), text = "Cryptocurrencies")
+
+            }
+            Card(modifier = Modifier
+                .clickable {
+                    navController.navigate("SETTINGS/CRYPTO_CURRENCIES")
+                }
+                .fillMaxWidth()
+                .padding(16.dp)) {
+                Row(Modifier.padding(16.dp)) {
+                    Text("Cryptocurrencies", modifier = Modifier.weight(1F, true))
+                    Switch(
+                        checked = userPreferences.value?.darkTheme ?: false, onCheckedChange = {
+                            viewModel.toggleDarkTheme()
+                        })
                 }
             }
         }

@@ -52,8 +52,7 @@ fun CryptoDetails(
                         Icon(Icons.Filled.ArrowBack, "")
                     }
                 },
-                backgroundColor = Color.Blue,
-                contentColor = Color.White,
+                backgroundColor = MaterialTheme.colors.primary,
                 elevation = 12.dp
             )
         }
