@@ -22,6 +22,9 @@ class SettingsViewModel @Inject constructor(
     val userPreferences: LiveData<UserPreferences>
         get() = _userPreferences
     private var cryptoCurrencies = mutableSetOf<String>()
+    private val _query = MutableLiveData<String>()
+    val query: LiveData<String>
+        get() = _query
 
     init {
         viewModelScope.launch {
@@ -54,5 +57,9 @@ class SettingsViewModel @Inject constructor(
 
     fun containCryptoCurrency(id: String): Boolean {
         return cryptoCurrencies.contains(id)
+    }
+
+    fun changeQuery(query: String) {
+        _query.value = query;
     }
 }
