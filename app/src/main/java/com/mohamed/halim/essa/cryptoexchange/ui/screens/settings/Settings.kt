@@ -42,15 +42,27 @@ fun Settings(navController: NavController, viewModel: SettingsViewModel = hiltVi
             )
         }
     ) {
-        Card(modifier = Modifier
-            .clickable {
-                navController.navigate("SETTINGS/REAL_CURRENCY")
+        Column {
+            Card(modifier = Modifier
+                .clickable {
+                    navController.navigate("SETTINGS/REAL_CURRENCY")
+                }
+                .fillMaxWidth()
+                .padding(16.dp)) {
+                Column(Modifier.padding(8.dp)) {
+                    Text("Exchange Currency")
+                    Text(userPreferences.value?.RealCurrency ?: "USD", fontSize = 16.sp)
+                }
             }
-            .fillMaxWidth()
-            .padding(16.dp)) {
-            Column(Modifier.padding(8.dp)) {
-                Text("Exchange Currency")
-                Text(userPreferences.value?.RealCurrency ?: "USD", fontSize = 16.sp)
+            Card(modifier = Modifier
+                .clickable {
+                    navController.navigate("SETTINGS/CRYPTO_CURRENCIES")
+                }
+                .fillMaxWidth()
+                .padding(16.dp)) {
+                Column(Modifier.padding(16.dp)) {
+                    Text("Cryptocurrencies")
+                }
             }
         }
     }

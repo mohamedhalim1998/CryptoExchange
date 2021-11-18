@@ -43,6 +43,13 @@ class MainActivity : ComponentActivity() {
                             parentViewModel
                         )
                     }
+                    composable("SETTINGS/CRYPTO_CURRENCIES") {
+                        val parentEntry = remember {
+                            navController.getBackStackEntry("SETTINGS")
+                        }
+                        val parentViewModel = hiltViewModel<SettingsViewModel>(parentEntry)
+                        CryptoSettings(navController, parentViewModel)
+                    }
                     composable(
                         "CRYPTO_DETAILS/{currency_id}"
                     ) { backStackEntry ->

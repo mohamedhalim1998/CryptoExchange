@@ -1,13 +1,14 @@
 package com.mohamed.halim.essa.cryptoexchange.ui.screens.settings
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.mohamed.halim.essa.cryptoexchange.data.Repository
 import com.mohamed.halim.essa.cryptoexchange.prefstore.PrefsStoreManager
+import com.mohamed.halim.essa.cryptoexchange.prefstore.UserPreferences
+import com.mohamed.halim.essa.cryptoexchange.utils.listFromString
+import com.mohamed.halim.essa.cryptoexchange.utils.stringFromList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,10 +18,41 @@ class SettingsViewModel @Inject constructor(
     private val prefsStoreManager: PrefsStoreManager,
     private val state: SavedStateHandle,
 ) : ViewModel() {
-    val userPreferences = prefsStoreManager.userPreferencesFlow.asLiveData(Dispatchers.IO)
+    private val _userPreferences = MutableLiveData<UserPreferences>()
+    val userPreferences: LiveData<UserPreferences>
+        get() = _userPreferences
+    private var cryptoCurrencies = mutableSetOf<String>()
+
+    init {
+        viewModelScope.launch {
+            prefsStoreManager.userPreferencesFlow.collect {
+                _userPreferences.value = it
+                cryptoCurrencies = listFromString(it.cryptoCurrencies).toMutableSet()
+            }
+        }
+    }
+
     fun changeRealCurrency(realCurrency: String) {
         viewModelScope.launch {
             prefsStoreManager.updateRealCurrency(realCurrency)
         }
+    }
+
+    fun changeCryptoCurrencies() {
+        viewModelScope.launch {
+            prefsStoreManager.updateCryptoCurrency(stringFromList(cryptoCurrencies.toList()))
+        }
+    }
+
+    fun addCryptoCurrency(id: String) {
+        cryptoCurrencies.add(id)
+    }
+
+    fun deleteCryptoCurrency(id: String) {
+        cryptoCurrencies.remove(id)
+    }
+
+    fun containCryptoCurrency(id: String): Boolean {
+        return cryptoCurrencies.contains(id)
     }
 }
