@@ -22,13 +22,7 @@ import com.mohamed.halim.essa.cryptoexchange.R
 @Composable
 fun Settings(navController: NavController, viewModel: SettingsViewModel = hiltViewModel()) {
     val userPreferences = viewModel.userPreferences.observeAsState()
-    val realCurrencyResult =
-        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("REAL_CURRENCY")
-            ?.observeAsState()
 
-    realCurrencyResult?.value?.let {
-        viewModel.changeRealCurrency(it)
-    }
     Scaffold(
         topBar = {
             TopAppBar(

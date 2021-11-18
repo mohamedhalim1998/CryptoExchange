@@ -15,15 +15,13 @@ import androidx.navigation.NavController
 import com.mohamed.halim.essa.cryptoexchange.utils.CurrencyDataUtils
 
 @Composable
- fun RealCurrencySettings(navController: NavController) {
+fun RealCurrencySettings(navController: NavController, viewModel: SettingsViewModel) {
     LazyColumn {
         items(CurrencyDataUtils.cryptoCurrencyMap.values.filter { it.isCrypto == 0 }) { currency ->
             Card(modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    navController.previousBackStackEntry
-                        ?.savedStateHandle
-                        ?.set("REAL_CURRENCY", currency.currencyId)
+                    viewModel.changeRealCurrency(currency.currencyId)
                     navController.popBackStack()
                 }
                 .padding(8.dp)) {
