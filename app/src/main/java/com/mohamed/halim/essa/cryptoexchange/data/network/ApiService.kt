@@ -10,11 +10,17 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("v1/exchangerate/USD?filter_asset_id=[,SHIB,DOGE,DOT,XRP,SOL,ADA,USDT,BNB,ETH,BTC,]&invert=true&apikey=$API_KEY")
-    suspend fun getRates(): RateExchangeResponse
+    @GET("v1/exchangerate/{real_currency}?&invert=true&apikey=$API_KEY")
+    suspend fun getRates(
+        @Path("real_currency") realCurrency: String,
+        @Query("filter_asset_id") cryptoCurrencies: String
+    ): RateExchangeResponse
 
-    @GET("v1/assets?filter_asset_id=[,SHIB,DOGE,DOT,XRP,ADA,USDT,BNB,ETH,BTC,SOL,]&apikey=$API_KEY")
-    suspend fun getCurrencyInfo(): List<CurrencyInfo>
+    @GET("v1/assets?&apikey=$API_KEY")
+    suspend fun getCurrencyInfo(
+        @Query("filter_asset_id") cryptoCurrencies: String
+
+    ): List<CurrencyInfo>
 
     @GET("v1/exchangerate/{asset_id}/USD/history?&apikey=$API_KEY")
     suspend fun getCryptoHistory(

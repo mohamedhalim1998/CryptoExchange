@@ -20,20 +20,31 @@ import kotlin.collections.HashMap
 private const val TAG = "Repository"
 
 class Repository(private val networkSource: ApiService, private val localSource: CryptoDao) {
-    fun getCurrentRate(): Flow<List<CryptoCurrency>> {
+    fun getCurrentRate(
+        realCurrencyId: String,
+        cryptoCurrenciesId: String
+    ): Flow<List<CryptoCurrency>> {
+        Log.d(TAG, "getCurrentRate: $realCurrencyId \n $cryptoCurrenciesId")
         return flow {
             try {
-                val rates = networkSource.getRates();
-                val currencyInfoList = networkSource.getCurrencyInfo()
+                val rates = networkSource.getRates(realCurrencyId, cryptoCurrenciesId)
+                Log.d(TAG, "getCurrentRate: $rates")
+                val currencyInfoList = networkSource.getCurrencyInfo(cryptoCurrenciesId)
                 val cryptoCurrencyDtoList = convertToDto(rates.rates, currencyInfoList)
                 val domainList = CryptoDtoToDomainMapper.toDomainList(cryptoCurrencyDtoList);
-                localSource.insertCrypto(CryptoLocalToDomain.fromDomainList(domainList, "USD"))
+                localSource.deleteCrypto(realCurrencyId)
+                localSource.insertCrypto(
+                    CryptoLocalToDomain.fromDomainList(
+                        domainList,
+                        realCurrencyId
+                    )
+                )
             } catch (e: Exception) {
                 Log.e(TAG, "getCurrentRate: ", e)
             } finally {
                 emit(
                     CryptoLocalToDomain.toDomainList(
-                        localSource.getCurrentRates("USD")
+                        localSource.getCurrentRates(realCurrencyId)
                     )
                 )
             }

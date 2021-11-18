@@ -41,8 +41,8 @@ interface CryptoDao {
     suspend fun insertRateHistory(rateHistoryLocalList: List<RateHistoryLocal>)
 
 
-    @Query("DELETE FROM crypto")
-    suspend fun deleteCrypto()
+    @Query("DELETE FROM crypto WHERE realCurrencyId = :realCurrencyId")
+    suspend fun deleteCrypto(realCurrencyId: String)
 
     @Query("DELETE FROM `Rate History` WHERE historyPeriod = :historyPeriod AND realCurrencyId = :realCurrencyId AND cryptoCurrency = :cryptoCurrency")
     suspend fun deleteHistoryRate(
