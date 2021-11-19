@@ -68,7 +68,7 @@ fun Settings(navController: NavController, viewModel: SettingsViewModel = hiltVi
                 .fillMaxWidth()
                 .padding(16.dp)) {
                 Row(Modifier.padding(16.dp)) {
-                    Text("Cryptocurrencies", modifier = Modifier.weight(1F, true))
+                    Text("DarkTheme", modifier = Modifier.weight(1F, true))
                     Switch(
                         checked = userPreferences.value?.darkTheme ?: false, onCheckedChange = {
                             viewModel.toggleDarkTheme()
