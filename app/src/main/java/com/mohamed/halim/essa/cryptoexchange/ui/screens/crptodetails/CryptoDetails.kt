@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,6 +34,8 @@ fun CryptoDetails(
     val rateHistory = viewModel.rateHistory.observeAsState(listOf())
     val currentRate = viewModel.currentRate.observeAsState()
     val currentPeriod = viewModel.currentPeriod.observeAsState()
+    val userPreferences = viewModel.userPreferences.observeAsState()
+
     if (currentPeriod.value == null) {
         viewModel.getCryptoHistoryHour(cryptoId)
         viewModel.getCurrentRate(cryptoId)
@@ -105,7 +106,7 @@ fun CryptoDetails(
             ) {
                 if (rateHistory.value.isNotEmpty()) {
                     Log.d(TAG, "CryptoDetails: ${currentPeriod.value}")
-                    Graph(rateHistory.value)
+                    Graph(rateHistory.value, userPreferences.value?.darkTheme ?:false)
                 } else {
                     CircularProgressIndicator()
                 }

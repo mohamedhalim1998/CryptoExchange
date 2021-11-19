@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
@@ -22,9 +21,9 @@ import com.mohamed.halim.essa.cryptoexchange.data.domain.rate.RateHistory
 private const val TAG = "RateGraph"
 
 @Composable
-fun Graph(rates: List<RateHistory>) {
+fun Graph(rates: List<RateHistory>, darkTheme: Boolean) {
     val context = LocalContext.current
-    val chart = setupChart(rates, context)
+    val chart = setupChart(rates, context, darkTheme)
     AndroidView({ chart },
         Modifier
             .fillMaxWidth()
@@ -37,13 +36,14 @@ fun Graph(rates: List<RateHistory>) {
         })
 }
 
-fun setupChart(rates: List<RateHistory>, context: Context): LineChart {
+fun setupChart(rates: List<RateHistory>, context: Context, darkTheme: Boolean): LineChart {
     val chart = LineChart(context);
     chart.data = LineData(setupDataset(rates, context))
-    chart.setBackgroundColor(Color.WHITE);
+    chart.setBackgroundColor(if(darkTheme) Color.BLACK else Color.WHITE);
     chart.description.isEnabled = false
     chart.notifyDataSetChanged()
     chart.invalidate()
+    chart.axisLeft.textColor = if(!darkTheme) Color.BLACK else Color.WHITE
     chart.axisLeft.setDrawGridLines(false);
     chart.axisRight.setDrawGridLines(false)
     chart.axisRight.setDrawAxisLine(false)
@@ -55,8 +55,7 @@ fun setupChart(rates: List<RateHistory>, context: Context): LineChart {
     chart.setTouchEnabled(true)
     chart.xAxis.setDrawLabels(false)
     chart.legend.isEnabled = false
-
-    chart.marker = TextMarkerView(context, R.layout.text_marker_view);
+    chart.marker = TextMarkerView(context, R.layout.text_marker_view, darkTheme);
     return chart
 }
 

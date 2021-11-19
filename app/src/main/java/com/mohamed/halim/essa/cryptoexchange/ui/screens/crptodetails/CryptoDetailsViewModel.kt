@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.mohamed.halim.essa.cryptoexchange.data.Repository
 import com.mohamed.halim.essa.cryptoexchange.data.domain.cryptocurrency.CryptoCurrency
 import com.mohamed.halim.essa.cryptoexchange.data.domain.rate.RateHistory
+import com.mohamed.halim.essa.cryptoexchange.prefstore.PrefsStoreManager
 import com.mohamed.halim.essa.cryptoexchange.utils.HistoryPeriod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -16,6 +17,7 @@ private const val TAG = "CryptoDetailsViewModel"
 @HiltViewModel
 class CryptoDetailsViewModel @Inject constructor(
     private val repository: Repository,
+    private val prefsStoreManager: PrefsStoreManager,
     private val state: SavedStateHandle,
 ) : ViewModel() {
     private val _rateHistory = MutableLiveData<List<RateHistory>>()
@@ -28,6 +30,8 @@ class CryptoDetailsViewModel @Inject constructor(
     private val _currentPeriod = MutableLiveData<HistoryPeriod>()
     val currentPeriod: LiveData<HistoryPeriod>
         get() = _currentPeriod
+
+    val userPreferences = prefsStoreManager.userPreferencesFlow.asLiveData()
 
     fun getCryptoHistoryHour(assetId: String) {
         viewModelScope.launch {
