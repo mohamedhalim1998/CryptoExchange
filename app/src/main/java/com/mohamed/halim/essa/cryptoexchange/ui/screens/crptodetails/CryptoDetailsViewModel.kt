@@ -6,9 +6,11 @@ import com.mohamed.halim.essa.cryptoexchange.data.Repository
 import com.mohamed.halim.essa.cryptoexchange.data.domain.cryptocurrency.CryptoCurrency
 import com.mohamed.halim.essa.cryptoexchange.data.domain.rate.RateHistory
 import com.mohamed.halim.essa.cryptoexchange.prefstore.PrefsStoreManager
+import com.mohamed.halim.essa.cryptoexchange.prefstore.UserPreferences
 import com.mohamed.halim.essa.cryptoexchange.utils.HistoryPeriod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,7 +33,18 @@ class CryptoDetailsViewModel @Inject constructor(
     val currentPeriod: LiveData<HistoryPeriod>
         get() = _currentPeriod
 
-    val userPreferences = prefsStoreManager.userPreferencesFlow.asLiveData()
+    private val _userPreferences = MutableLiveData<UserPreferences>();
+    val userPreferences: LiveData<UserPreferences>
+        get() = _userPreferences
+
+    init {
+        Log.d(TAG, "init: ${userPreferences.value}")
+        viewModelScope.launch {
+            prefsStoreManager.userPreferencesFlow.collect {
+                _userPreferences.value = it
+            }
+        }
+    }
 
     fun getCryptoHistoryHour(assetId: String) {
         viewModelScope.launch {
@@ -63,9 +76,14 @@ class CryptoDetailsViewModel @Inject constructor(
 
     fun getCurrentRate(cryptoId: String) {
         viewModelScope.launch {
-            repository.getCurrentRate(cryptoId).collect {
-                _currentRate.value = it
-            }
+            repository.getCurrentRateOfOne(
+                cryptoId,
+                userPreferences.value?.RealCurrency ?: "USD"
+            )
+                .collect {
+                    Log.d(TAG, "getCurrentRate: $it")
+                    _currentRate.value = it
+                }
         }
     }
 

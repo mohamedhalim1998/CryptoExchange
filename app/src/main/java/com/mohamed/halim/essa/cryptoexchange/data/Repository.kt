@@ -51,11 +51,16 @@ class Repository(private val networkSource: ApiService, private val localSource:
         }
     }
 
-    fun getCurrentRate(cryptoId: String): Flow<CryptoCurrency> {
+    fun getCurrentRateOfOne(cryptoId: String, realCurrencyId: String): Flow<CryptoCurrency> {
         return flow {
+            Log.d(TAG, "getCurrentRateOfOne: $cryptoId")
+            Log.d(TAG, "getCurrentRateOfOne: $realCurrencyId")
+            val local = localSource.getCurrentRates(realCurrencyId, cryptoId)
+            Log.d(TAG, "getCurrentRateOfOne: $local")
             emit(
+
                 CryptoLocalToDomain.toDomain(
-                    localSource.getCurrentRates("USD", cryptoId)
+                    local
                 )
             )
         }
